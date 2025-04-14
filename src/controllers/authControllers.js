@@ -1,6 +1,6 @@
 import { Student, Teacher } from "../Model/usersSchema.js";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../utils/generateToken.js";
+import { generateToken } from "../lib/utils.js";
 
 // Function to register a student
 export const registerStudent = async (req, res) => {
@@ -67,7 +67,7 @@ export const loginStudent = async(req, res) => {
             return res.status(400).json({message: "Wrong credentials"})
         }
         // Send the response with the token and user information
-        const token = generateToken(student._id);
+        const token = generateToken(student._id, res);
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
@@ -89,6 +89,19 @@ export const registerTeacher = async (req, res) => {
     const { fullName, email, password } = req.body;
 
     try {
+
+        if(
+            !fullName ||
+            !email ||
+            !password 
+        ){
+            return res.status(400).send({message: "Complete All fields"})
+        }
+        // Check if the student already exists
+        let teacher = await Student.findOne({email});
+        if(teacher){
+            return res.status(400).send({message: "Teacher already exist!"})
+        }
         
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -133,7 +146,7 @@ export const loginTeacher = async(req, res) => {
 
         
         // Send the response with the token and user information
-        const token = generateToken(teacher._id);
+        const token = generateToken(teacher._id, res);
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
@@ -149,3 +162,13 @@ export const loginTeacher = async(req, res) => {
         return res.status(400).send({message: "Internal server error"});
     }
 };
+
+export const logout = (req, res) => {
+    try {
+      res.cookie("jwt", "", { maxAge: 0 });
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      console.log("Error in logout controller", error.message);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
