@@ -1,9 +1,6 @@
-import { Student, Teacher } from "../Model/usersSchema.js";
+import { Student, Teacher, StudentLoginLog, TeacherLoginLog } from "../Model/usersSchema.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
-
-import StudentLoginLog from "../Model/studentLoginLog.js";
-import TeacherLoginLog from "../Model/teacherLoginLog.js";
 
 // Function to register a student
 export const registerStudent = async (req, res) => {
@@ -71,12 +68,14 @@ export const loginStudent = async(req, res) => {
         }
 
         // Create a new login log entry
-        await StudentLoginLog.create({
+        const newStudentLoginLog = new StudentLoginLog({
             studentId: student._id,
             fullName: student.fullName,
+            email: student.email,
             loginTime: new Date()
           });
 
+        await newStudentLoginLog.save();
         // Send the response with the token and user information
         const token = generateToken(student._id, res);
         // Set the token in the response header
@@ -156,11 +155,14 @@ export const loginTeacher = async(req, res) => {
         }
 
         // Create a new login log entry
-        await TeacherLoginLog.create({
+        const newTeacherLoginLog = new TeacherLoginLog({
             teacherId: teacher._id,
             fullName: teacher.fullName,
+            email: teacher.email,
             loginTime: new Date()
           });
+
+        await newTeacherLoginLog.save();
         
         // Send the response with the token and user information
         const token = generateToken(teacher._id, res);
@@ -216,7 +218,7 @@ export const getStudentLogs = async (req, res) => {
     }
   };
 
-  export const getTeacherLogs = async (req, res) => {
+export const getTeacherLogs = async (req, res) => {
     try {
       const logs = await TeacherLoginLog.find().sort({ loginTime: -1 });
   
