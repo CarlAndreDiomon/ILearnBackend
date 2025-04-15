@@ -113,7 +113,7 @@ export const registerTeacher = async (req, res) => {
             return res.status(400).send({message: "Complete All fields"})
         }
         // Check if the student already exists
-        let teacher = await Student.findOne({email});
+        let teacher = await Teacher.findOne({email});
         if(teacher){
             return res.status(400).send({message: "Teacher already exist!"})
         }
