@@ -2,6 +2,9 @@ import { Student, Teacher } from "../Model/usersSchema.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
 
+import StudentLoginLog from "../Model/studentLoginLog.js";
+import TeacherLoginLog from "../Model/teacherLoginLog.js";
+
 // Function to register a student
 export const registerStudent = async (req, res) => {
     const { fullName, email, password } = req.body;
@@ -66,6 +69,14 @@ export const loginStudent = async(req, res) => {
         if(!isPasswordCorrect){
             return res.status(400).json({message: "Wrong credentials"})
         }
+
+        // Create a new login log entry
+        await StudentLoginLog.create({
+            studentId: student._id,
+            fullName: student.fullName,
+            loginTime: new Date()
+          });
+
         // Send the response with the token and user information
         const token = generateToken(student._id, res);
         // Set the token in the response header
@@ -144,6 +155,12 @@ export const loginTeacher = async(req, res) => {
             return res.status(400).json({message: "Wrong credentials"});
         }
 
+        // Create a new login log entry
+        await TeacherLoginLog.create({
+            teacherId: teacher._id,
+            fullName: teacher.fullName,
+            loginTime: new Date()
+          });
         
         // Send the response with the token and user information
         const token = generateToken(teacher._id, res);
@@ -173,3 +190,54 @@ export const logout = (req, res) => {
     }
   };
 
+// Function to get all student login logs
+export const getStudentLogs = async (req, res) => {
+    try {
+      const logs = await StudentLoginLog.find().sort({ loginTime: -1 });
+  
+      const simplifiedLogs = logs.map(log => ({
+        name: log.fullName,
+        id: log.studentId,
+        time: new Date(log.loginTime).toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        })
+      }));
+  
+      res.status(200).json(simplifiedLogs);
+    } catch (err) {
+      console.error("Error fetching student login logs:", err);
+      res.status(500).json({ message: "Server error while fetching logs" });
+    }
+  };
+
+  export const getTeacherLogs = async (req, res) => {
+    try {
+      const logs = await TeacherLoginLog.find().sort({ loginTime: -1 });
+  
+      const simplifiedLogs = logs.map(log => ({
+        name: log.fullName,
+        id: log.teacherId,
+        time: new Date(log.loginTime).toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        })
+      }));
+  
+      res.status(200).json(simplifiedLogs);
+    } catch (err) {
+      console.error("Error fetching teacher login logs:", err);
+      res.status(500).json({ message: "Server error while fetching logs" });
+    }
+  };
+  
