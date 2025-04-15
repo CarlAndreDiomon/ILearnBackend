@@ -67,6 +67,11 @@ export const loginStudent = async(req, res) => {
             return res.status(400).json({message: "Wrong credentials"})
         }
 
+        // Check if the student is already logged in
+        const existingLoginLog = await StudentLoginLog.findOne({ studentId: student._id });
+        if (existingLoginLog) {
+            return res.status(400).json({ message: "Student is already logged in" });
+        }
         // Create a new login log entry
         const newStudentLoginLog = new StudentLoginLog({
             studentId: student._id,
@@ -154,6 +159,11 @@ export const loginTeacher = async(req, res) => {
             return res.status(400).json({message: "Wrong credentials"});
         }
 
+        // Check if the teacher is already logged in
+         const existingLoginLog = await TeacherLoginLog.findOne({ teacherId: teacher._id });
+         if (existingLoginLog) {
+             return res.status(400).json({ message: "Teacher is already logged in" });
+        }
         // Create a new login log entry
         const newTeacherLoginLog = new TeacherLoginLog({
             teacherId: teacher._id,
@@ -161,6 +171,7 @@ export const loginTeacher = async(req, res) => {
             email: teacher.email,
             loginTime: new Date()
           });
+        // Save the login log entry to the database
 
         await newTeacherLoginLog.save();
         

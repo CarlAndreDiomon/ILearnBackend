@@ -3,7 +3,7 @@ import express from 'express';
 import usersRoutes from './routes/usersRoutes.js';
 import connectDB from './config/db.js';
 import { mongoDBURL, PORT } from './config/config.js';
-
+import cors from 'cors';
 
 const app = express();
 
