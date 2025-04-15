@@ -71,7 +71,7 @@ export const loginStudent = async(req, res) => {
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
-        res.status(200).json({
+        return res.status(200).send({
             message: "Login successfully",
             token,
             _id: student._id,
@@ -150,13 +150,13 @@ export const loginTeacher = async(req, res) => {
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
-        res.json({
+        return res.status(200).send({
             message: "Login successfully",
             token,
             _id: teacher._id,
             fullName: teacher.fullName,
             email: teacher.email
-        })
+        });
     } catch (error) {
         console.error("Error in teacherController login", error)
         return res.status(400).send({message: "Internal server error"});
@@ -172,3 +172,4 @@ export const logout = (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   };
+
