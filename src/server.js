@@ -7,6 +7,13 @@ import { mongoDBURL, PORT } from './config/config.js';
 
 const app = express();
 
+// Use cors middleware to allow requests from your frontend (you can specify the exact URL)
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from this frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
+}));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
