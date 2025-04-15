@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+
+  app:
+    build: .
+    container_name: ilearnbackend
+    ports:
+      - "${PORT}:${PORT}"  # Use the PORT defined in .env
+    environment:
+      - MONGO_URI=${MONGO_URI}  # Use MONGO_URI defined in .env
+    depends_on:
+      - mongo
+    restart: always
+
+volumes:
+  mongodb_data:
