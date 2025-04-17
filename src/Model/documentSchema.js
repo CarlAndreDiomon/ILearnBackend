@@ -15,10 +15,10 @@ const documentSchema = mongoose.Schema({
         required: true,
     },
     gradeLevel: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "GradeLevel",
         required: true,
-        enum: ["Grade 7","Grade 8","Grade 9","Grade 10","Grade 11","Grade 12",],
-    },
+      },
     subject: {
         type: String,
         required: true,
