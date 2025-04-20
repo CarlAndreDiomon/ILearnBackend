@@ -1,11 +1,16 @@
 import express from 'express';
-import { getModulesGroupedByGrade } from '../controllers/moduleController';
+import { downloadFiles, getFiles, uploadFiles } from '../controllers/moduleController.js';
 
 const router = express.Router();
 
 // Route to get modules grouped by grade
-router.get('/modules/grouped', getModulesGroupedByGrade);
+router.post('/upload', uploadFiles);
 
+// Route to get modules grouped by grade
+router.get('/files', getFiles);
+
+// Download file
+router.get('/download/:name', downloadFiles);
 // Add other routes as needed
 
 export default router;

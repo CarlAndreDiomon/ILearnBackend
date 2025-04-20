@@ -20,6 +20,9 @@ services:
     depends_on:
       - mongo
     restart: always
+    volumes:
+      - ./src/config/serviceAccountKey.json:/app/src/config/serviceAccountKey.json
+      - .:/app 
 
 volumes:
   mongodb_data:
