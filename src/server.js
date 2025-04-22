@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import { mongoDBURL, PORT } from './config/config.js';
 import cors from 'cors';
 import modulesRoutes from './routes/moduleRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', usersRoutes);
 app.use('/api', modulesRoutes);
+app.use('/api/auth/admin', adminRoutes);
 
 connectDB().then(() => app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
