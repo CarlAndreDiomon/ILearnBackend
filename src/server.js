@@ -1,11 +1,16 @@
 
 import express from 'express';
-import usersRoutes from './routes/usersRoutes.js';
-import connectDB from './config/db.js';
-import { mongoDBURL, PORT } from './config/config.js';
 import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
+
+import usersRoutes from './routes/usersRoutes.js';
 import modulesRoutes from './routes/moduleRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import connectDB from './config/db.js';
+import  PORT  from './config/config.js';
 
 const app = express();
 
@@ -15,6 +20,21 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 }));
+
+// Use helmet to set security-related HTTP headers
+app.use(helmet());
+
+// Use rate limiting to prevent brute-force attacks
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests, please try again later.',
+});
+app.use(limiter);
+
+// Input Sanitization
+app.use(mongoSanitize());
+app.use(xss());
 
 app.use(express.json());
 
