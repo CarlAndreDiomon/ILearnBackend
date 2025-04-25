@@ -3,14 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import mongoSanitize from 'express-mongo-sanitize';
-import xss from 'xss-clean';
 
 import usersRoutes from './routes/usersRoutes.js';
 import modulesRoutes from './routes/moduleRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import connectDB from './config/db.js';
-import  PORT  from './config/config.js';
+import  {PORT}  from './config/config.js';
 
 const app = express();
 
@@ -32,9 +30,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Input Sanitization
-app.use(mongoSanitize());
-app.use(xss());
+
 
 app.use(express.json());
 
