@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', usersRoutes);
 app.use('/api', modulesRoutes);
-app.use('/api/auth/admin', adminRoutes);
+app.use('/api/admin', adminRoutes);
 
 connectDB().then(() => app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)

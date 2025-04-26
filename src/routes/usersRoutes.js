@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerStudent, loginStudent, registerTeacher, loginTeacher, logout, getStudentLogs, getTeacherLogs } from '../controllers/authControllers.js';
+import { registerStudent, loginStudent, loginTeacher, logout} from '../controllers/authControllers.js';
 
 const router = express.Router();
 
@@ -7,15 +7,9 @@ const router = express.Router();
 router.post('/registerStudent', registerStudent);
 // Route to login a student
 router.post('/loginStudent', loginStudent);
-// Route to register a teacher
-router.post('/registerTeacher', registerTeacher);
 // Route to login a teacher
 router.post('/loginTeacher', loginTeacher);
 // Route to logout
 router.post('/logout', logout);
-// Route to get student logs
-router.get('/studentLogs', getStudentLogs);
-// Route to get teacher logs
-router.get('/teacherLogs', getTeacherLogs);
 
 export default router;

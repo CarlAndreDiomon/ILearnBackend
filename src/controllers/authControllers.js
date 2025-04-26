@@ -82,7 +82,7 @@ export const loginStudent = async(req, res) => {
 
         await newStudentLoginLog.save();
         // Send the response with the token and user information
-        const token = generateToken(student._id, res);
+        const token = generateToken(student._id, 'student', res);
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
@@ -91,53 +91,14 @@ export const loginStudent = async(req, res) => {
             token,
             _id: student._id,
             username: student.fullName,
-            email: student.email
+            email: student.email,
+            role: 'student',
         });
     } catch (error) {
         console.error("Error in studentController login", error)
         return res.status(400).send({message: "Internal server error"});
     }
 }
-
-// Function to register a teacher
-export const registerTeacher = async (req, res) => {
-    const { fullName, email, password } = req.body;
-
-    try {
-
-        if(
-            !fullName ||
-            !email ||
-            !password 
-        ){
-            return res.status(400).send({message: "Complete All fields"})
-        }
-        // Check if the student already exists
-        let teacher = await Teacher.findOne({email});
-        if(teacher){
-            return res.status(400).send({message: "Teacher already exist!"})
-        }
-        
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        const newTeacher = new Teacher({
-            fullName,
-            email,
-            password: hashedPassword,
-        });
-
-        await newTeacher.save();
-
-        return res.status(201).send({message: "Teacher created successfully",
-            fullName: newTeacher.fullName,
-            email: newTeacher.email,
-            password: newTeacher.password,
-        })
-    } catch (error) {
-        res.status(500).json({ message: "Error registering teacher", error });
-        console.error("Error registering teacher:", error);
-    }
-};
 
 // Function to login a teacher
 export const loginTeacher = async(req, res) => {
@@ -176,7 +137,7 @@ export const loginTeacher = async(req, res) => {
         await newTeacherLoginLog.save();
         
         // Send the response with the token and user information
-        const token = generateToken(teacher._id, res);
+        const token = generateToken(teacher._id, 'teacher', res);
         // Set the token in the response header
         res.setHeader("Authorization", `Bearer ${token}`);
         // Send the response with the token and user information
@@ -185,7 +146,8 @@ export const loginTeacher = async(req, res) => {
             token,
             _id: teacher._id,
             fullName: teacher.fullName,
-            email: teacher.email
+            email: teacher.email,
+            role: "teacher",
         });
     } catch (error) {
         console.error("Error in teacherController login", error)
@@ -203,54 +165,3 @@ export const logout = (req, res) => {
     }
   };
 
-// Function to get all student login logs
-export const getStudentLogs = async (req, res) => {
-    try {
-      const logs = await StudentLoginLog.find().sort({ loginTime: -1 });
-  
-      const simplifiedLogs = logs.map(log => ({
-        name: log.fullName,
-        id: log.studentId,
-        time: new Date(log.loginTime).toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
-        })
-      }));
-  
-      res.status(200).json(simplifiedLogs);
-    } catch (err) {
-      console.error("Error fetching student login logs:", err);
-      res.status(500).json({ message: "Server error while fetching logs" });
-    }
-  };
-
-export const getTeacherLogs = async (req, res) => {
-    try {
-      const logs = await TeacherLoginLog.find().sort({ loginTime: -1 });
-  
-      const simplifiedLogs = logs.map(log => ({
-        name: log.fullName,
-        id: log.teacherId,
-        time: new Date(log.loginTime).toLocaleString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false
-        })
-      }));
-  
-      res.status(200).json(simplifiedLogs);
-    } catch (err) {
-      console.error("Error fetching teacher login logs:", err);
-      res.status(500).json({ message: "Server error while fetching logs" });
-    }
-  };
-  
