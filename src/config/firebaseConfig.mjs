@@ -1,12 +1,7 @@
 import admin from 'firebase-admin';
-import fs from 'fs';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// Get __dirname equivalent in ES module
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Read and parse the JSON key
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
