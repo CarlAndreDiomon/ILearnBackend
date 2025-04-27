@@ -1,5 +1,6 @@
 import express from 'express';
 import { registerStudent, loginStudent, loginTeacher, logout} from '../controllers/authControllers.js';
+import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -10,6 +11,6 @@ router.post('/loginStudent', loginStudent);
 // Route to login a teacher
 router.post('/loginTeacher', loginTeacher);
 // Route to logout
-router.post('/logout', logout);
+router.post('/logout',protect, logout);
 
 export default router;
