@@ -42,13 +42,13 @@ export const uploadFiles = [upload.single('file'), async (req, res) => {
       await savedFile.save();
   
       res.status(201).json({
-        message: '✅ Uploaded and saved',
+        message: 'Uploaded and saved',
         file: savedFile,
       });
   
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: '❌ Upload failed' });
+      res.status(500).json({ message: ' Upload failed' });
     }
   }];
 

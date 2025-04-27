@@ -9,6 +9,9 @@ this is a simple backend server for a simple app to provide and help students an
 - Admin Registers Teachers
 - File Upload and download
 - Seperate Model, Controller, And Routes for scalability
+- Cors to ensure only the frontend of Ilearn can access it
+- secure user information
+- JsonWebToken
 ## Installation
 
 To install this project, follow the steps below:

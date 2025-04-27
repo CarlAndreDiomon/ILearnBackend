@@ -12,9 +12,14 @@ import  {PORT}  from './config/config.js';
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173', // for admin frontend localhost
+  'http://example.com', // Another allowed origin
+  // Add more origins as needed
+];
 // Use cors middleware to allow requests from your frontend (you can specify the exact URL)
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from this frontend URL
+  origin: allowedOrigins, // Allow requests from this frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
 }));
