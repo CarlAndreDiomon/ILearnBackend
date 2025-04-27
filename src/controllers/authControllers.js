@@ -16,6 +16,15 @@ export const registerStudent = async (req, res) => {
         ){
             return res.status(400).send({message: "Complete All fields"})
         }
+
+        if(password.length < 6){   
+            return res.status(400).send({message: "Password should be at least 6 characters"})
+        }
+        // Check if the email is valid
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).send({ message: "Invalid email format" });
+        }
         // Check if the student already exists
         let student = await Student.findOne({email});
         if(student){
@@ -37,7 +46,6 @@ export const registerStudent = async (req, res) => {
             _id: newStudent._id,
             fullName: newStudent.fullName,
             email: newStudent.email,
-            password: newStudent.password,
         })
     } catch (error) {
         res.status(500).json({ message: "Error registering student", error });
