@@ -10,9 +10,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Bake the key into the image:
-COPY ./serviceAccountKey.json /app/src/config/serviceAccountKey.json
-
 # Copy the rest of the application code
 COPY . .
 
