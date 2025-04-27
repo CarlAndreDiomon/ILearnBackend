@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Copy the serviceAccountKey.json into the container (if it's not mounted via volume)
+COPY ./src/config/serviceAccountKey.json /app/src/config/serviceAccountKey.json
+
 # Copy the rest of the application code
 COPY . .
 
