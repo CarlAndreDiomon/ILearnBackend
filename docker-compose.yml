@@ -1,15 +1,6 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-    restart: always
-
   app:
     build: .
     container_name: ilearnbackend
@@ -17,12 +8,11 @@ services:
       - "${PORT}:${PORT}"  # Use the PORT defined in .env
     environment:
       - MONGO_URI=${MONGO_URI}  # Use MONGO_URI defined in .env
-    depends_on:
-      - mongo
+      - PORT=${PORT}
+    env_file:
+      - .env
     restart: always
     volumes:
       - ./src/config/serviceAccountKey.json:/app/src/config/serviceAccountKey.json
       - .:/app 
 
-volumes:
-  mongodb_data:
