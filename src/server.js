@@ -14,7 +14,7 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173', // for admin frontend localhost
-  'http://example.com', // Another allowed origin
+  'exp://192.168.1.4:8081', // Another allowed origin
   // Add more origins as needed
 ];
 // Use cors middleware to allow requests from your frontend (you can specify the exact URL)
