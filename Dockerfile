@@ -10,9 +10,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the serviceAccountKey.json from the root directory
-COPY ./serviceAccountKey.json /app/serviceAccountKey.json
-
 # Copy the rest of the application code
 COPY . .
 

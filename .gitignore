@@ -3,7 +3,7 @@ node_modules/
 
 # Environment variables
 .env
-/src/config/serviceAccountKey.json
+serviceAccountKey.json
 /src/uploads
 # Logs
 logs
