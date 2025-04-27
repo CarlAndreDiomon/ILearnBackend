@@ -13,6 +13,7 @@ services:
       - .env
     restart: always
     volumes:
-      - serviceAccountKey.json:/app/src/config/serviceAccountKey.json
       - .:/app 
+      - ./serviceAccountKey.json:/app/src/config/serviceAccountKey.json
+
 
