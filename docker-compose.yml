@@ -9,10 +9,12 @@ services:
     environment:
       - MONGO_URI=${MONGO_URI}  # Use MONGO_URI defined in .env
       - PORT=${PORT}
+      - FIRE_SERVICE_API_KEY=${FIRE_SERVICE_API_KEY}
     env_file:
       - .env
     restart: always
     volumes:
+      - ./src/config/serviceAccountKey.json:/app/src/config/serviceAccountKey.json
       - .:/app 
   
 
