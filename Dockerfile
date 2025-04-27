@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Create the directory for the service account key
+RUN mkdir -p /app/src/config
 # Copy the rest of the application code
 COPY . .
 
