@@ -91,7 +91,7 @@ export const loginStudent = async(req, res) => {
         await newStudentLoginLog.save();
         // Send the response with the token and user information
         generateToken(student._id, 'student', res);
-        
+
         return res.status(200).send({
             message: "Login successfully",
             _id: student._id,
@@ -142,10 +142,8 @@ export const loginTeacher = async(req, res) => {
         await newTeacherLoginLog.save();
         
         // Send the response with the token and user information
-        const token = generateToken(teacher._id, 'teacher', res);
-        // Set the token in the response header
-        res.setHeader("Authorization", `Bearer ${token}`);
-        // Send the response with the token and user information
+        generateToken(teacher._id, 'teacher', res);
+        
         return res.status(200).send({
             message: "Login successfully",
             token,
