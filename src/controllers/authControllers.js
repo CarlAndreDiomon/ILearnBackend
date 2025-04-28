@@ -90,13 +90,10 @@ export const loginStudent = async(req, res) => {
 
         await newStudentLoginLog.save();
         // Send the response with the token and user information
-        const token = generateToken(student._id, 'student', res);
-        // Set the token in the response header
-        res.setHeader("Authorization", `Bearer ${token}`);
-        // Send the response with the token and user information
+        generateToken(student._id, 'student', res);
+        
         return res.status(200).send({
             message: "Login successfully",
-            token,
             _id: student._id,
             username: student.fullName,
             email: student.email,
