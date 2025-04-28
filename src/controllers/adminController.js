@@ -53,13 +53,10 @@ export const loginAdmin = async (req, res) => {
         }
 
          // Send the response with the token and user information
-        const token = generateToken(admin._id, 'admin', res);
-        // Set the token in the response header
-        res.setHeader("Authorization", `Bearer ${token}`);
+        generateToken(admin._id, 'admin', res);
 
-        return res.status(200).json({ message: "Login successful",  
+        return res.status(200).json({
             message: "Admin Login successfully",
-            token,
             _id: admin._id,
             fullName: admin.adminName,
             role: "admin",
@@ -83,6 +80,28 @@ export const getAdmin = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 }
+
+
+export const checkAdminAuth = (req, res) => {
+    try {
+      res.status(200).json(req.user);
+    } catch (error) {
+      console.log("Error in checkAuth controller", error.message);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
+  
+
+export const logout = (req, res) => {
+try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged out successfully" });
+} catch (error) {
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+}
+};
+  
 
 // // Function to register a teacher
 export const registerTeacher = async (req, res) => {

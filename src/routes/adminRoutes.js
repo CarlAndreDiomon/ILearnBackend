@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAdmin, getStudentLogs, getTeacherLogs, loginAdmin, registerAdmin, registerTeacher } from '../controllers/adminController.js';
+import { getAdmin, getStudentLogs, getTeacherLogs, loginAdmin, registerAdmin, registerTeacher, checkAdminAuth, logout } from '../controllers/adminController.js';
 import { isAdmin } from '../middleware/roleCheckMiddleware.js';
 import protect from '../middleware/authMiddleware.js';
 
@@ -12,6 +12,10 @@ router.post('/register', registerAdmin);
 router.post('/login', loginAdmin);
 // Route to get all admins
 router.get('/', isAdmin, getAdmin);
+//  Checkauth
+router.get('/checkAdminAuth', protect, checkAdminAuth);
+//  logout
+router.post('/logout', logout);
 
 // Route to register a teacher
 router.post('/registerTeacher', protect, isAdmin, registerTeacher);
