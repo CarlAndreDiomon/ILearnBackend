@@ -9,6 +9,7 @@ import modulesRoutes from './routes/moduleRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import connectDB from './config/db.js';
 import  {PORT}  from './config/config.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -17,11 +18,13 @@ const allowedOrigins = [
   'exp://192.168.1.4:8081', // Another allowed origin
   // Add more origins as needed
 ];
+app.use(cookieParser());
 // Use cors middleware to allow requests from your frontend (you can specify the exact URL)
 app.use(cors({
   origin: allowedOrigins, // Allow requests from this frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],// Specify the allowed headers
+  credentials: true, 
 }));
 
 // Use helmet to set security-related HTTP headers
