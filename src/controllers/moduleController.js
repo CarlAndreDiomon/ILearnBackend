@@ -6,9 +6,19 @@ import bucket from "../config/firebaseConfig.mjs";
 
 
 export const uploadFiles = [upload.single('file'), async (req, res) => {
+  const file = req.file;  
+  const { fileName, subject, gradeLevel } = req.body;
     try {
-      const file = req.file;
-  
+
+      if (
+        !file ||
+        !fileName ||
+        !subject ||
+        !gradeLevel
+      ) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
+      // Check if the file is a PDF
       if (!file || file.mimetype !== 'application/pdf') {
         return res.status(400).json({ message: 'Only PDF files are allowed' });
       }
@@ -35,15 +45,21 @@ export const uploadFiles = [upload.single('file'), async (req, res) => {
       // Save metadata to MongoDB
       const savedFile = new File({
         originalName: file.originalname,
+        fileName,
+        subject,
+        gradeLevel,
         firebasePath,
         downloadURL: url,
       });
   
       await savedFile.save();
   
-      res.status(201).json({
+      return res.status(201).json({
         message: 'Uploaded and saved',
         file: savedFile,
+        fileName: file.fileName,
+        subject: file.subject,
+        gradeLevel: file.gradeLevel,
       });
   
     } catch (err) {

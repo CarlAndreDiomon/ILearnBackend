@@ -6,7 +6,7 @@ import protect from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // Route to get modules grouped by grade
-router.post('/upload',protect, isTeacher, uploadFiles);
+router.post('/upload', protect, isTeacher, uploadFiles);
 
 // Route to get modules grouped by grade
 router.get('/files', protect, getFiles);
