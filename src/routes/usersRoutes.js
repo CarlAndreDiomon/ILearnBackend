@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerStudent, loginStudent, loginTeacher, logout} from '../controllers/userControllers.js';
+import { registerStudent, loginStudent, loginTeacher, logout, changeProfile} from '../controllers/userControllers.js';
 import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.post('/loginStudent', loginStudent);
 router.post('/loginTeacher', loginTeacher);
 // Route to logout
 router.post('/logout',protect, logout);
+// Change Profile
+router.post('/changeProfile', protect, changeProfile);
 
 export default router;
