@@ -4,13 +4,14 @@ import { generateToken } from "../lib/utils.js";
 
 // Function to register a student
 export const registerStudent = async (req, res) => {
-    const { fullName, email, password } = req.body;
+    const { fullName, gradeLevel, email, password } = req.body;
 
     try {
 
         
         if(
             !fullName ||
+            !gradeLevel ||
             !email ||
             !password 
         ){
@@ -37,6 +38,7 @@ export const registerStudent = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
         const newStudent = new Student({
             fullName,
+            gradeLevel,
             email,
             password: hashedPassword,
         });
@@ -46,6 +48,7 @@ export const registerStudent = async (req, res) => {
             _id: newStudent._id,
             fullName: newStudent.fullName,
             email: newStudent.email,
+            gradeLevel: newStudent.gradeLevel,
         })
     } catch (error) {
         res.status(500).json({ message: "Error registering student", error });
@@ -168,3 +171,42 @@ export const logout = (req, res) => {
     }
   };
 
+export const changeProfile = async (req, res) => {
+    const { fullName, email } = req.body;
+    const userId = req.user._id;
+
+    try {
+        if(
+            !fullName ||
+            !email
+        ){
+            return res.status(400).send({message: "Complete All fields"})
+        }
+
+        // Check if the email is valid
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).send({ message: "Invalid email format" });
+        }
+       
+        const updatedUser = await Student.findByIdAndUpdate(userId, {
+            fullName,
+            email,
+        }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        return res.status(200).send({
+            message: "Profile updated successfully",
+            _id: updatedUser._id,
+            fullName: updatedUser.fullName,
+            email: updatedUser.email,
+        });
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ message: "Error updating profile", error });
+    }
+}
+    

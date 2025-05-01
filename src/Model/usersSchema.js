@@ -6,6 +6,10 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    gradeLevel: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
