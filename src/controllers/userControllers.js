@@ -46,6 +46,7 @@ export const registerStudent = async (req, res) => {
         await newStudent.save();
 
         generateToken(newStudent._id, 'student', res);
+        
         return res.status(201).send({message: "Student created successfully",
             _id: newStudent._id,
             fullName: newStudent.fullName,
