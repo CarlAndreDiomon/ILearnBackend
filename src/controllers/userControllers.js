@@ -163,17 +163,32 @@ export const loginTeacher = async(req, res) => {
         return res.status(400).send({message: "Internal server error"});
     }
 };
-export const logout = (req, res) => {
+
+export const logout = async (req, res) => {
   try {
+    const token = req.cookies.jwt;
+    if (!token) {
+      return res.status(401).json({ message: "No token found" });
+    }
+
+    // Verify token to get user ID
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const studentId = decoded.userId;  // or decoded.userId depending on your token payload
+
+    // Delete the login log for this student
+    await StudentLoginLog.deleteOne({ studentId });
+
+    // Clear the cookie
     res.cookie("jwt", "", {
       maxAge: 0,
       httpOnly: true,
       sameSite: "None",
       secure: true,
     });
+
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.log("Error in logout controller", error.message);
+    console.error("Error in logout controller", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
