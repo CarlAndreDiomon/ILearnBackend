@@ -1,6 +1,7 @@
 import { Student, Teacher, StudentLoginLog, TeacherLoginLog } from "../Model/usersSchema.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
+import jwt from "jsonwebtoken";
 
 // Function to register a student
 export const registerStudent = async (req, res) => {
