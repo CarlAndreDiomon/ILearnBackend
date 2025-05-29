@@ -153,7 +153,6 @@ export const loginTeacher = async(req, res) => {
         
         return res.status(200).send({
             message: "Login successfully",
-            token,
             _id: teacher._id,
             fullName: teacher.fullName,
             email: teacher.email,
