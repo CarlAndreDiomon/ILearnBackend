@@ -13,15 +13,16 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-// const allowedOrigins = [
-//   'http://localhost:5173', // for admin frontend localhost
-//   'exp://192.168.1.4:8081', // Another allowed origin
-//   // Add more origins as needed
-// ];
+const allowedOrigins = [
+  'http://localhost:5173', // for admin frontend localhost
+  'exp://192.168.1.4:8081',
+  'exp://192.168.254.103:8081', // Another allowed origin
+  // Add more origins as needed
+];
 app.use(cookieParser());
 // Use cors middleware to allow requests from your frontend (you can specify the exact URL)
 app.use(cors({
-  origin: '*', // Allow requests from this frontend URL
+  origin: allowedOrigins, // Allow requests from this frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],// Specify the allowed headers
   credentials: true, 
