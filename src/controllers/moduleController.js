@@ -70,27 +70,35 @@ export const uploadFiles = [upload.single('file'), async (req, res) => {
 
   // get the list of saves files 
 export const getFiles = async (req, res) => {
-    try {
-      const files = await File.find().sort({ uploadedAt: -1 }); // latest first
-  
-      if (!files.length) {
-        return res.status(404).send('No files found.');
-      }
-  
-      // Return a simple HTML list (you can also return JSON if needed)
-      const fileListHTML = files
-        .map(
-          (file, index) =>
-            `${index + 1}. <a href="${file.downloadURL}" target="_blank">${file.originalName}</a>`
-        )
-        .join('<br>');
-  
-      res.send(`<h2>Uploaded Files</h2>${fileListHTML}`);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Unable to retrieve files', error: err });
+  try {
+    const files = await File.find().sort({ uploadedAt: -1 }); // Get latest files first
+
+    if (!files || files.length === 0) {
+      return res.status(404).json({ message: 'No files found.' });
     }
-  };
+
+    // Format files for frontend
+    const formattedFiles = files.map(file => ({
+      id: file._id,
+      originalName: file.originalName,
+      downloadURL: file.downloadURL,
+      uploadedAt: file.uploadedAt,
+      uploadedBy: file.uploadedBy, // optional
+    }));
+
+    res.status(200).json({
+      message: 'Files retrieved successfully',
+      files: formattedFiles,
+    });
+  } catch (err) {
+    console.error('Error fetching files:', err.message);
+    res.status(500).json({
+      message: 'Unable to retrieve files',
+      error: err.message,
+    });
+  }
+};
+
 
 export const downloadFiles = async (req, res) => {
     const fileName = req.params.name;
