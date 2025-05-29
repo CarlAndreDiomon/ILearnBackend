@@ -9,7 +9,7 @@ const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'i-learn-app-a0baa.firebasestorage.app', // replace with yours
+  storageBucket: 'i-learn-app-a0baa.firebasestorage.app',
 });
 
 const bucket = admin.storage().bucket();
