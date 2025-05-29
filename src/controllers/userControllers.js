@@ -133,10 +133,10 @@ export const loginTeacher = async(req, res) => {
         }
 
         // Check if the teacher is already logged in
-         const existingLoginLog = await TeacherLoginLog.findOne({ teacherId: teacher._id });
-         if (existingLoginLog) {
-             return res.status(400).json({ message: "Teacher is already logged in" });
-        }
+        //  const existingLoginLog = await TeacherLoginLog.findOne({ teacherId: teacher._id });
+        //  if (existingLoginLog) {
+        //      return res.status(400).json({ message: "Teacher is already logged in" });
+        // }
         // Create a new login log entry
         const newTeacherLoginLog = new TeacherLoginLog({
             teacherId: teacher._id,
