@@ -25,7 +25,7 @@ app.use(cors({
   origin: "*", // Allow requests from this frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],// Specify the allowed headers
-  credentials: true, 
+  // credentials: true, 
 }));
 
 // Use helmet to set security-related HTTP headers
