@@ -85,7 +85,7 @@ export const getFiles = async (req, res) => {
       gradeLevel: file.gradeLevel,
       downloadURL: file.downloadURL,
       uploadedAt: file.uploadedAt,
-      uploadedBy: file.uploadedBy, // optional
+      uploadedBy: file.uploadedBy, 
     }));
 
     res.status(200).json({

@@ -23,7 +23,7 @@ const allowedOrigins = [
 app.use(cookieParser());
 // Use cors middleware to allow requests from your frontend (you can specify the exact URL)
 app.use(cors({
-  origin: "allowedOrigins", // Allow requests from this frontend URL
+  origin: allowedOrigins, // Allow requests from this frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],// Specify the allowed headers
   // credentials: true, 
