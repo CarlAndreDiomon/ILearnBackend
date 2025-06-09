@@ -81,6 +81,8 @@ export const getFiles = async (req, res) => {
     const formattedFiles = files.map(file => ({
       id: file._id,
       originalName: file.originalName,
+      subject: file.subject,
+      gradeLevel: file.gradeLevel,
       downloadURL: file.downloadURL,
       uploadedAt: file.uploadedAt,
       uploadedBy: file.uploadedBy, // optional
